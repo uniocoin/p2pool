@@ -1,6 +1,6 @@
 from p2pool.dash import networks
 
-PARENT = networks.nets['unio']
+PARENT = networks.nets['dash']
 SHARE_PERIOD = 20 # seconds
 CHAIN_LENGTH = 24*60*60//20 # shares
 REAL_CHAIN_LENGTH = 24*60*60//20 # shares
