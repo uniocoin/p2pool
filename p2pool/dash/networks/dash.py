@@ -12,14 +12,14 @@ P2P_PORT = 9838
 ADDRESS_VERSION = 76
 SCRIPT_ADDRESS_VERSION = 16
 RPC_PORT = 9338
-RPC_CHECK = defer.inlineCallbacks(lambda dashd: defer.returnValue(
-            'dashaddress' in (yield dashd.rpc_help()) and
-            not (yield dashd.rpc_getinfo())['testnet']
+RPC_CHECK = defer.inlineCallbacks(lambda uniod: defer.returnValue(
+            'unioaddress' in (yield uniod.rpc_help()) and
+            not (yield uniod.rpc_getinfo())['testnet']
         ))
 BLOCKHASH_FUNC = lambda data: pack.IntType(256).unpack(__import__('dash_hash').getPoWHash(data))
 POW_FUNC = lambda data: pack.IntType(256).unpack(__import__('dash_hash').getPoWHash(data))
 BLOCK_PERIOD = 150 # s
-SYMBOL = 'DASH'
+SYMBOL = 'UOC'
 CONF_FILE_FUNC = lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'DashCore') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/DashCore/') if platform.system() == 'Darwin' else os.path.expanduser('~/.uniocore'), 'unio.conf')
 #BLOCK_EXPLORER_URL_PREFIX = 'https://explorer.dash.org/block/'
 #ADDRESS_EXPLORER_URL_PREFIX = 'https://explorer.dash.org/address/'
