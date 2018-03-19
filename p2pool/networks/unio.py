@@ -1,6 +1,6 @@
-from p2pool.dash import networks
+from p2pool.unio import networks
 
-PARENT = networks.nets['dash']
+PARENT = networks.nets['unio']
 SHARE_PERIOD = 20 # seconds
 CHAIN_LENGTH = 24*60*60//20 # shares
 REAL_CHAIN_LENGTH = 24*60*60//20 # shares
@@ -14,6 +14,6 @@ MIN_TARGET = 0
 MAX_TARGET = 2**256//2**20 - 1
 PERSIST = True
 WORKER_PORT = 7903
-#BOOTSTRAP_ADDRS = 'dash01.p2poolmining.us p2pool.2sar.ru dash02.p2poolmining.us p2pool.dash.siampm.com dash03.p2poolmining.us crypto.office-on-the.net dash04.p2poolmining.us'.split(' ')
-ANNOUNCE_CHANNEL = '#p2pool-dash'
+#BOOTSTRAP_ADDRS = 'unio01.p2poolmining.us p2pool.2sar.ru unio02.p2poolmining.us p2pool.unio.siampm.com unio03.p2poolmining.us crypto.office-on-the.net unio04.p2poolmining.us'.split(' ')
+ANNOUNCE_CHANNEL = '#p2pool-unio'
 VERSION_CHECK = lambda v: v >= 120100

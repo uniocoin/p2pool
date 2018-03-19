@@ -1,5 +1,5 @@
 '''
-Implementation of Dash's p2p protocol
+Implementation of Unio's p2p protocol
 '''
 
 import random
@@ -9,7 +9,7 @@ import time
 from twisted.internet import protocol
 
 import p2pool
-from . import data as dash_data
+from . import data as unio_data
 from p2pool.util import deferral, p2protocol, pack, variable
 
 class Protocol(p2protocol.Protocol):
@@ -41,8 +41,8 @@ class Protocol(p2protocol.Protocol):
         ('version', pack.IntType(32)),
         ('services', pack.IntType(64)),
         ('time', pack.IntType(64)),
-        ('addr_to', dash_data.address_type),
-        ('addr_from', dash_data.address_type),
+        ('addr_to', unio_data.address_type),
+        ('addr_from', unio_data.address_type),
         ('nonce', pack.IntType(64)),
         ('sub_version_num', pack.VarStrType()),
         ('start_height', pack.IntType(32)),
@@ -63,7 +63,7 @@ class Protocol(p2protocol.Protocol):
         self.pinger = deferral.RobustLoopingCall(self.send_ping, nonce=1234)
         self.pinger.start(30)
 
-    # https://github.com/dashpay/dash/blob/v0.12.1.x/src/protocol.h#L338-L362
+    # https://github.com/uniopay/unio/blob/v0.12.1.x/src/protocol.h#L338-L362
     message_inv = pack.ComposedType([
         ('invs', pack.ListType(pack.ComposedType([
             ('type', pack.EnumType(pack.IntType(32), {1: 'tx', 2: 'block', 3: 'filtered_block', 4: 'txlock_request', 5: 'txlock_vote', 6: 'spork', 7: 'masternode_winner', 8: 'masternode_scanning_error', 9: 'budget_vote', 10: 'budget_proposal', 11: 'budget_finalized', 12: 'budget_finalized_vote', 13: 'masternode_quorum', 14: 'masternode_announce', 15: 'masternode_ping', 16: 'dstx', 17: 'governance_object', 18: 'governance_object_vote', 19: 'masternode_verify'})),
@@ -101,7 +101,7 @@ class Protocol(p2protocol.Protocol):
     message_addr = pack.ComposedType([
         ('addrs', pack.ListType(pack.ComposedType([
             ('timestamp', pack.IntType(32)),
-            ('address', dash_data.address_type),
+            ('address', unio_data.address_type),
         ]))),
     ])
     def handle_addr(self, addrs):
@@ -109,34 +109,34 @@ class Protocol(p2protocol.Protocol):
             pass
 
     message_tx = pack.ComposedType([
-        ('tx', dash_data.tx_type),
+        ('tx', unio_data.tx_type),
     ])
     def handle_tx(self, tx):
         self.factory.new_tx.happened(tx)
 
     message_block = pack.ComposedType([
-        ('block', dash_data.block_type),
+        ('block', unio_data.block_type),
     ])
     def handle_block(self, block):
-        block_hash = self.net.BLOCKHASH_FUNC(dash_data.block_header_type.pack(block['header']))
+        block_hash = self.net.BLOCKHASH_FUNC(unio_data.block_header_type.pack(block['header']))
         self.get_block.got_response(block_hash, block)
         self.get_block_header.got_response(block_hash, block['header'])
 
     message_block_old = pack.ComposedType([
-        ('block', dash_data.block_type_old),
+        ('block', unio_data.block_type_old),
     ])
     def handle_block_old(self, block):
-        block_hash = self.net.BLOCKHASH_FUNC(dash_data.block_header_type.pack(block['header']))
+        block_hash = self.net.BLOCKHASH_FUNC(unio_data.block_header_type.pack(block['header']))
         self.get_block.got_response(block_hash, block)
         self.get_block_header.got_response(block_hash, block['header'])
 
     message_headers = pack.ComposedType([
-        ('headers', pack.ListType(dash_data.block_type_old)),
+        ('headers', pack.ListType(unio_data.block_type_old)),
     ])
     def handle_headers(self, headers):
         for header in headers:
             header = header['header']
-            self.get_block_header.got_response(self.net.BLOCKHASH_FUNC(dash_data.block_header_type.pack(header)), header)
+            self.get_block_header.got_response(self.net.BLOCKHASH_FUNC(unio_data.block_header_type.pack(header)), header)
         self.factory.new_headers.happened([header['header'] for header in headers])
 
     message_ping = pack.ComposedType([
@@ -164,7 +164,7 @@ class Protocol(p2protocol.Protocol):
         if hasattr(self, 'pinger'):
             self.pinger.stop()
         if p2pool.DEBUG:
-            print >>sys.stderr, 'Dashd connection lost. Reason:', reason.getErrorMessage()
+            print >>sys.stderr, 'Uniod connection lost. Reason:', reason.getErrorMessage()
 
 class ClientFactory(protocol.ReconnectingClientFactory):
     protocol = Protocol

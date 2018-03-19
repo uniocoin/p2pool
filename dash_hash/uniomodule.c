@@ -1,8 +1,8 @@
 #include <Python.h>
 
-#include "dash.h"
+#include "unio.h"
 
-static PyObject *dash_getpowhash(PyObject *self, PyObject *args)
+static PyObject *unio_getpowhash(PyObject *self, PyObject *args)
 {
     char *output;
     PyObject *value;
@@ -17,9 +17,9 @@ static PyObject *dash_getpowhash(PyObject *self, PyObject *args)
     output = PyMem_Malloc(32);
 
 #if PY_MAJOR_VERSION >= 3
-    dash_hash((char *)PyBytes_AsString((PyObject*) input), output);
+    unio_hash((char *)PyBytes_AsString((PyObject*) input), output);
 #else
-    dash_hash((char *)PyString_AsString((PyObject*) input), output);
+    unio_hash((char *)PyString_AsString((PyObject*) input), output);
 #endif
     Py_DECREF(input);
 #if PY_MAJOR_VERSION >= 3
@@ -31,27 +31,27 @@ static PyObject *dash_getpowhash(PyObject *self, PyObject *args)
     return value;
 }
 
-static PyMethodDef DashMethods[] = {
-    { "getPoWHash", dash_getpowhash, METH_VARARGS, "Returns the proof of work hash using dash hash" },
+static PyMethodDef UnioMethods[] = {
+    { "getPoWHash", unio_getpowhash, METH_VARARGS, "Returns the proof of work hash using unio hash" },
     { NULL, NULL, 0, NULL }
 };
 
 #if PY_MAJOR_VERSION >= 3
-static struct PyModuleDef DashModule = {
+static struct PyModuleDef UnioModule = {
     PyModuleDef_HEAD_INIT,
-    "dash_hash",
+    "unio_hash",
     "...",
     -1,
-    DashMethods
+    UnioMethods
 };
 
-PyMODINIT_FUNC PyInit_dash_hash(void) {
-    return PyModule_Create(&DashModule);
+PyMODINIT_FUNC PyInit_unio_hash(void) {
+    return PyModule_Create(&UnioModule);
 }
 
 #else
 
-PyMODINIT_FUNC initdash_hash(void) {
-    (void) Py_InitModule("dash_hash", DashMethods);
+PyMODINIT_FUNC initunio_hash(void) {
+    (void) Py_InitModule("unio_hash", UnioMethods);
 }
 #endif

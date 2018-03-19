@@ -1,4 +1,4 @@
-#include "dash.h"
+#include "unio.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -17,7 +17,7 @@
 #include "sha3/sph_echo.h"
 
 
-void dash_hash(const char* input, char* output)
+void unio_hash(const char* input, char* output)
 {
     sph_blake512_context     ctx_blake;
     sph_bmw512_context       ctx_bmw;

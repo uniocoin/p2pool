@@ -25,8 +25,8 @@ install:
 - pip install %pip_py2exe%
 #- git submodule init
 #- git submodule update
-#- 'cd dash_hash && python setup.py install && cd ..'
-- pip install git+https://github.com/dashpay/dash_hash.git
+#- 'cd unio_hash && python setup.py install && cd ..'
+- pip install git+https://github.com/uniocoin/unio_hash.git
 
 build: off
 
@@ -38,7 +38,7 @@ after_test:
 #- python setup.py build --plat-name=%platform% bdist_wininst
 #- git clone --depth 1 -b develop https://github.com/pyinstaller/pyinstaller
 #- 'cd pyinstaller && python setup.py install && cd ..'
-#- 'pyinstaller -n p2pool_dash --debug --onefile -y -c -p p2pool -p p2pool\dash -p p2pool\dash\networks -p p2pool\networks -p dash_hash run_p2pool.py'
+#- 'pyinstaller -n p2pool_unio --debug --onefile -y -c -p p2pool -p p2pool\unio -p p2pool\unio\networks -p p2pool\networks -p unio_hash run_p2pool.py'
 
 artifacts:
 - path: dist\*
