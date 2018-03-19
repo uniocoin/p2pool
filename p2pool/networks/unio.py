@@ -14,6 +14,6 @@ MIN_TARGET = 0
 MAX_TARGET = 2**256//2**20 - 1
 PERSIST = True
 WORKER_PORT = 7903
-#BOOTSTRAP_ADDRS = 'unio01.p2poolmining.us p2pool.2sar.ru unio02.p2poolmining.us p2pool.unio.siampm.com unio03.p2poolmining.us crypto.office-on-the.net unio04.p2poolmining.us'.split(' ')
+BOOTSTRAP_ADDRS = ''.split(' ')
 ANNOUNCE_CHANNEL = '#p2pool-unio'
 VERSION_CHECK = lambda v: v >= 120100
